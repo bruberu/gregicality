@@ -7,6 +7,7 @@ import gregicadditions.machines.GATileEntities;
 import gregicadditions.machines.energyconverter.utils.EnergyConverterCraftingHelper;
 import gregicadditions.machines.energyconverter.utils.EnergyConverterType;
 import gregtech.api.GTValues;
+import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.ore.OrePrefix;
@@ -154,29 +155,36 @@ public class MachineCraftingRecipes {
         ModHandler.addShapedRecipe("ga_filtered_fluid_export_hatch_uiv", GATileEntities.OUTPUT_HATCH_FILTERED.get(GAValues.UIV + 1).getStackForm(), "F", "M", "G", 'M', GATileEntities.GA_HULLS[2].getStackForm(),          'G', Blocks.GLASS, 'F', MetaItems.FLUID_FILTER);
         ModHandler.addShapedRecipe("ga_filtered_fluid_export_hatch_max", GATileEntities.OUTPUT_HATCH_FILTERED.get(9).getStackForm(),                "F", "M", "G", 'M', MetaTileEntities.HULL[GTValues.MAX].getStackForm(), 'G', Blocks.GLASS, 'F', MetaItems.FLUID_FILTER);
 
+        OrePrefix plateOrCurved = GAConfig.GT6.addCurvedPlates ? plateCurved : plate;
         // Drums
-        if (GAConfig.GT6.registerDrums) {
-            ModHandler.addShapedRecipe("wooden_barrel", GATileEntities.WOODEN_DRUM.getStackForm(), "rSs", "PRP", "PRP", 'S', Items.SLIME_BALL, 'P', "plankWood", 'R', new UnificationEntry(stickLong, Iron));
+        ModHandler.addShapedRecipe("wooden_barrel", GATileEntities.WOODEN_DRUM.getStackForm(), "rSs", "PRP", "PRP", 'S', Items.SLIME_BALL, 'P', "plankWood", 'R', new UnificationEntry(stickLong, Iron));
+        ASSEMBLER_RECIPES.recipeBuilder().EUt(30).duration(200).inputs(new ItemStack(Blocks.PLANKS, 4, GTValues.W)).inputs(new ItemStack(Items.SLIME_BALL)).input(stickLong, Iron, 2).outputs(GATileEntities.WOODEN_DRUM.getStackForm()).circuitMeta(1).buildAndRegister();
 
-            OrePrefix prefix = (GAConfig.GT6.addCurvedPlates && GAConfig.GT6.BendingCylinders && GAConfig.GT6.BendingCurvedPlates) ? plateCurved : plate;
-            ModHandler.addShapedRecipe("bronze_drum",          GATileEntities.BRONZE_DRUM.getStackForm(),          " h ", "PRP", "PRP", 'P', new UnificationEntry(prefix, Bronze),         'R', new UnificationEntry(stickLong, Bronze));
-            ModHandler.addShapedRecipe("steel_drum",           GATileEntities.STEEL_DRUM.getStackForm(),           " h ", "PRP", "PRP", 'P', new UnificationEntry(prefix, Steel),          'R', new UnificationEntry(stickLong, Steel));
-            ModHandler.addShapedRecipe("stainless_steel_drum", GATileEntities.STAINLESS_STEEL_DRUM.getStackForm(), " h ", "PRP", "PRP", 'P', new UnificationEntry(prefix, StainlessSteel), 'R', new UnificationEntry(stickLong, StainlessSteel));
-            ModHandler.addShapedRecipe("titanium_drum",        GATileEntities.TITANIUM_DRUM.getStackForm(),        " h ", "PRP", "PRP", 'P', new UnificationEntry(prefix, Titanium),       'R', new UnificationEntry(stickLong, Titanium));
-            ModHandler.addShapedRecipe("tungstensteel_drum",   GATileEntities.TUNGSTENSTEEL_DRUM.getStackForm(),   " h ", "PRP", "PRP", 'P', new UnificationEntry(prefix, TungstenSteel),  'R', new UnificationEntry(stickLong, TungstenSteel));
-        }
+        ModHandler.addShapedRecipe("bronze_drum",          GATileEntities.BRONZE_DRUM.getStackForm(),          " h ", "PRP", "PRP", 'P', new UnificationEntry(plateOrCurved, Bronze),         'R', new UnificationEntry(stickLong, Bronze));
+        ModHandler.addShapedRecipe("steel_drum",           GATileEntities.STEEL_DRUM.getStackForm(),           " h ", "PRP", "PRP", 'P', new UnificationEntry(plateOrCurved, Steel),          'R', new UnificationEntry(stickLong, Steel));
+        ModHandler.addShapedRecipe("stainless_steel_drum", GATileEntities.STAINLESS_STEEL_DRUM.getStackForm(), " h ", "PRP", "PRP", 'P', new UnificationEntry(plateOrCurved, StainlessSteel), 'R', new UnificationEntry(stickLong, StainlessSteel));
+        ModHandler.addShapedRecipe("titanium_drum",        GATileEntities.TITANIUM_DRUM.getStackForm(),        " h ", "PRP", "PRP", 'P', new UnificationEntry(plateOrCurved, Titanium),       'R', new UnificationEntry(stickLong, Titanium));
+        ModHandler.addShapedRecipe("tungstensteel_drum",   GATileEntities.TUNGSTENSTEEL_DRUM.getStackForm(),   " h ", "PRP", "PRP", 'P', new UnificationEntry(plateOrCurved, TungstenSteel),  'R', new UnificationEntry(stickLong, TungstenSteel));
+        ASSEMBLER_RECIPES.recipeBuilder().EUt(30).duration(200).input(plateOrCurved, Bronze, 4).input(stickLong, Bronze, 2).outputs(GATileEntities.BRONZE_DRUM.getStackForm()).circuitMeta(1).buildAndRegister();
+        ASSEMBLER_RECIPES.recipeBuilder().EUt(30).duration(200).input(plateOrCurved, Steel, 4).input(stickLong, Steel, 2).outputs(GATileEntities.STEEL_DRUM.getStackForm()).circuitMeta(1).buildAndRegister();
+        ASSEMBLER_RECIPES.recipeBuilder().EUt(30).duration(200).input(plateOrCurved, StainlessSteel, 4).input(stickLong, StainlessSteel, 2).outputs(GATileEntities.STAINLESS_STEEL_DRUM.getStackForm()).circuitMeta(1).buildAndRegister();
+        ASSEMBLER_RECIPES.recipeBuilder().EUt(30).duration(200).input(plateOrCurved, Titanium, 4).input(stickLong, Titanium, 2).outputs(GATileEntities.TITANIUM_DRUM.getStackForm()).circuitMeta(1).buildAndRegister();
+        ASSEMBLER_RECIPES.recipeBuilder().EUt(30).duration(200).input(plateOrCurved, TungstenSteel, 4).input(stickLong, TungstenSteel, 2).outputs(GATileEntities.TUNGSTENSTEEL_DRUM.getStackForm()).circuitMeta(1).buildAndRegister();
 
         // Crates
-        if (GAConfig.Misc.registerCrates) {
+        ModHandler.addShapedRecipe("wooden_crate", GATileEntities.WOODEN_CRATE.getStackForm(), "RPR", "PsP", "RPR", 'P', "plankWood", 'R', new UnificationEntry(screw, Iron));
+        ASSEMBLER_RECIPES.recipeBuilder().EUt(30).duration(200).inputs(new ItemStack(Blocks.PLANKS, 4, GTValues.W)).input(screw, Iron, 4).outputs(GATileEntities.WOODEN_CRATE.getStackForm()).circuitMeta(2).buildAndRegister();
 
-            ModHandler.addShapedRecipe("wooden_crate", GATileEntities.WOODEN_CRATE.getStackForm(), "RPR", "PsP", "RPR", 'P', "plankWood", 'R', new UnificationEntry(screw, Iron));
-
-            ModHandler.addShapedRecipe("bronze_crate",          GATileEntities.BRONZE_CRATE.getStackForm(),          "RPR", "PhP", "RPR", 'P', new UnificationEntry(plate, Bronze),         'R', new UnificationEntry(stickLong, Bronze));
-            ModHandler.addShapedRecipe("steel_crate",           GATileEntities.STEEL_CRATE.getStackForm(),           "RPR", "PhP", "RPR", 'P', new UnificationEntry(plate, Steel),          'R', new UnificationEntry(stickLong, Steel));
-            ModHandler.addShapedRecipe("stainless_steel_crate", GATileEntities.STAINLESS_STEEL_CRATE.getStackForm(), "RPR", "PhP", "RPR", 'P', new UnificationEntry(plate, StainlessSteel), 'R', new UnificationEntry(stickLong, StainlessSteel));
-            ModHandler.addShapedRecipe("titanium_crate",        GATileEntities.TITANIUM_CRATE.getStackForm(),        "RPR", "PhP", "RPR", 'P', new UnificationEntry(plate, Titanium),       'R', new UnificationEntry(stickLong, Titanium));
-            ModHandler.addShapedRecipe("tungstensteel_crate",   GATileEntities.TUNGSTENSTEEL_CRATE.getStackForm(),   "RPR", "PhP", "RPR", 'P', new UnificationEntry(plate, TungstenSteel),  'R', new UnificationEntry(stickLong, TungstenSteel));
-        }
+        ModHandler.addShapedRecipe("bronze_crate",          GATileEntities.BRONZE_CRATE.getStackForm(),          "RPR", "PhP", "RPR", 'P', new UnificationEntry(plateOrCurved, Bronze),         'R', new UnificationEntry(stickLong, Bronze));
+        ModHandler.addShapedRecipe("steel_crate",           GATileEntities.STEEL_CRATE.getStackForm(),           "RPR", "PhP", "RPR", 'P', new UnificationEntry(plateOrCurved, Steel),          'R', new UnificationEntry(stickLong, Steel));
+        ModHandler.addShapedRecipe("stainless_steel_crate", GATileEntities.STAINLESS_STEEL_CRATE.getStackForm(), "RPR", "PhP", "RPR", 'P', new UnificationEntry(plateOrCurved, StainlessSteel), 'R', new UnificationEntry(stickLong, StainlessSteel));
+        ModHandler.addShapedRecipe("titanium_crate",        GATileEntities.TITANIUM_CRATE.getStackForm(),        "RPR", "PhP", "RPR", 'P', new UnificationEntry(plateOrCurved, Titanium),       'R', new UnificationEntry(stickLong, Titanium));
+        ModHandler.addShapedRecipe("tungstensteel_crate",   GATileEntities.TUNGSTENSTEEL_CRATE.getStackForm(),   "RPR", "PhP", "RPR", 'P', new UnificationEntry(plateOrCurved, TungstenSteel),  'R', new UnificationEntry(stickLong, TungstenSteel));
+        ASSEMBLER_RECIPES.recipeBuilder().EUt(30).duration(200).input(plateOrCurved, Bronze, 4).input(stickLong, Bronze, 4).outputs(GATileEntities.BRONZE_CRATE.getStackForm()).circuitMeta(2).buildAndRegister();
+        ASSEMBLER_RECIPES.recipeBuilder().EUt(30).duration(200).input(plateOrCurved, Steel, 4).input(stickLong, Steel, 4).outputs(GATileEntities.STEEL_CRATE.getStackForm()).circuitMeta(2).buildAndRegister();
+        ASSEMBLER_RECIPES.recipeBuilder().EUt(30).duration(200).input(plateOrCurved, StainlessSteel, 4).input(stickLong, StainlessSteel, 4).outputs(GATileEntities.STAINLESS_STEEL_CRATE.getStackForm()).circuitMeta(2).buildAndRegister();
+        ASSEMBLER_RECIPES.recipeBuilder().EUt(30).duration(200).input(plateOrCurved, Titanium, 4).input(stickLong, Titanium, 4).outputs(GATileEntities.TITANIUM_CRATE.getStackForm()).circuitMeta(2).buildAndRegister();
+        ASSEMBLER_RECIPES.recipeBuilder().EUt(30).duration(200).input(plateOrCurved, TungstenSteel, 4).input(stickLong, TungstenSteel, 4).outputs(GATileEntities.TUNGSTENSTEEL_CRATE.getStackForm()).circuitMeta(2).buildAndRegister();
 
         // Energy Converters
         for (final EnergyConverterType type : EnergyConverterType.values()) {
@@ -200,6 +208,7 @@ public class MachineCraftingRecipes {
         //Steam Machines
         ModHandler.addShapedRecipe("ga_steam_mixer", GATileEntities.STEAM_MIXER.getStackForm(), "GRG", "GPG", "PMP", 'M', MetaBlocks.MACHINE_CASING.getItemVariant(BlockMachineCasing.MachineCasingType.BRONZE_HULL), 'P', new UnificationEntry(pipeSmall, Bronze), 'R', new UnificationEntry(rotor, Bronze), 'G', Blocks.GLASS);
         ModHandler.addShapedRecipe("ga_steam_pump", GATileEntities.STEAM_PUMP.getStackForm(), "NLN", "NMN", "LRL", 'N', new UnificationEntry(pipeMedium, Bronze), 'L', new UnificationEntry(pipeLarge, Bronze), 'M', MetaBlocks.MACHINE_CASING.getItemVariant(BlockMachineCasing.MachineCasingType.BRONZE_HULL), 'R', new UnificationEntry(rotor, Bronze));
+        ModHandler.addShapedRecipe("ga_steam_miner", GATileEntities.STEAM_MINER.getStackForm(), "DSD", "SMS", "RSR", 'M', MetaBlocks.MACHINE_CASING.getItemVariant(BlockMachineCasing.MachineCasingType.BRONZE_HULL), 'S', new UnificationEntry(pipeMedium, Bronze), 'D', Items.DIAMOND, 'R', new UnificationEntry(rotor, Bronze));
 
         // UHV+ Energy Input/Output Hatches
         ModHandler.addShapedRecipe("ga_energy_input_hatch_uhv",  GATileEntities.ENERGY_INPUT[0].getStackForm(),  "   ", "CM ", "   ", 'M', GATileEntities.GA_HULLS[0].getStackForm(), 'C', new UnificationEntry(cableGtSingle, TungstenTitaniumCarbide));
